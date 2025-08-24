@@ -207,15 +207,28 @@ pub(crate) fn replace_arg_placeholders(arg: &str, params: &LaunchParameters) -> 
 		}
 	};
 	
-	if needs_quickplay_fix &&
-	   (arg.contains(placeholder!("quickPlaySingleplayer")) || 
-	    arg.contains(placeholder!("quickPlayMultiplayer")) || 
-	    arg.contains(placeholder!("quickPlayRealms"))) &&
-	   quickplay_singleplayer.is_empty() && 
-	   quickplay_multiplayer.is_empty() && 
-	   quickplay_realms.is_empty() {
-		eprintln!("🐛 QUICKPLAY DEBUG: Skipping empty quick play argument: {}", arg);
-		return None;
+	if needs_quickplay_fix {
+		// Skip placeholder arguments when all quick play values are empty
+		if (arg.contains(placeholder!("quickPlaySingleplayer")) || 
+		    arg.contains(placeholder!("quickPlayMultiplayer")) || 
+		    arg.contains(placeholder!("quickPlayRealms"))) &&
+		   quickplay_singleplayer.is_empty() && 
+		   quickplay_multiplayer.is_empty() && 
+		   quickplay_realms.is_empty() {
+			eprintln!("🐛 QUICKPLAY DEBUG: Skipping empty quick play placeholder argument: {}", arg);
+			return None;
+		}
+		
+		// Also skip final form arguments when they would be empty
+		if (arg.starts_with("--quickPlaySingleplayer") || 
+		    arg.starts_with("--quickPlayMultiplayer") || 
+		    arg.starts_with("--quickPlayRealms")) &&
+		   quickplay_singleplayer.is_empty() && 
+		   quickplay_multiplayer.is_empty() && 
+		   quickplay_realms.is_empty() {
+			eprintln!("🐛 QUICKPLAY DEBUG: Skipping empty quick play final argument: {}", arg);
+			return None;
+		}
 	}
 
 	// User
