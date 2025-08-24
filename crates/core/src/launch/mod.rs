@@ -49,6 +49,18 @@ pub(crate) async fn launch(
 		.users
 		.get_chosen_user()
 		.and_then(|x| x.get_access_token());
+	
+	// Debug logging for authentication
+	if let Some(chosen_user) = params.users.get_chosen_user() {
+		eprintln!("🔍 Chosen user: {}", chosen_user.get_id());
+		if let Some(token) = chosen_user.get_access_token() {
+			eprintln!("✅ User has access token (length: {})", format!("{:?}", token).len());
+		} else {
+			eprintln!("❌ User has NO access token!");
+		}
+	} else {
+		eprintln!("❌ No chosen user found!");
+	}
 
 	let proc_params = LaunchGameProcessParameters {
 		command: command.as_os_str(),

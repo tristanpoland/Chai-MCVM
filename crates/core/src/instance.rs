@@ -219,6 +219,10 @@ impl<'params> Instance<'params> {
 		};
 		let handle = crate::launch::launch(params, o)
 			.await
+			.map_err(|e| {
+				eprintln!("🔥 Core launch failure details: {:#}", e);
+				e
+			})
 			.context("Failed to run launch routine")?;
 		Ok(handle)
 	}

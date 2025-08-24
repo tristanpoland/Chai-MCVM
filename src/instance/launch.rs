@@ -96,6 +96,10 @@ impl Instance {
 		let handle = instance
 			.launch_with_handle(o)
 			.await
+			.map_err(|e| {
+				eprintln!("🔥 Instance launch failure: {:#}", e);
+				e
+			})
 			.context("Failed to launch core instance")?;
 
 		// Run while_instance_launch hooks alongside
