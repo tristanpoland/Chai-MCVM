@@ -255,6 +255,13 @@ pub(crate) fn replace_arg_placeholders(arg: &str, params: &LaunchParameters) -> 
 			} = &user.kind
 			{
 				out = out.replace(placeholder!("auth_xuid"), xbox_uid);
+			} else if let UserKind::Unknown(provider) = &user.kind {
+				// For ChaiLauncher users, use UUID as Xbox UID since we have Microsoft auth
+				if provider == "chailauncher" {
+					if let Some(uuid) = user.get_uuid() {
+						out = out.replace(placeholder!("auth_xuid"), uuid);
+					}
+				}
 			}
 
 			// Blank any args we don't replace since the game will complain if we don't
