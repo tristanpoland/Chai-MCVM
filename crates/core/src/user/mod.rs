@@ -101,6 +101,11 @@ impl User {
 		self.access_token.as_ref()
 	}
 
+	/// Set the access token for this user
+	pub fn set_access_token(&mut self, token: AccessToken) {
+		self.access_token = Some(token);
+	}
+
 	/// Get the Xbox UID of this user, if it exists
 	pub fn get_xbox_uid(&self) -> Option<&String> {
 		if let UserKind::Microsoft { xbox_uid } = &self.kind {
