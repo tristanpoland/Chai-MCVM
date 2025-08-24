@@ -54,7 +54,9 @@ pub(crate) async fn launch(
 	if let Some(chosen_user) = params.users.get_chosen_user() {
 		eprintln!("🔍 Chosen user: {}", chosen_user.get_id());
 		if let Some(token) = chosen_user.get_access_token() {
-			eprintln!("✅ User has access token (length: {})", format!("{:?}", token).len());
+			let token_str = format!("{:?}", token);
+			eprintln!("✅ User has access token (length: {})", token_str.len());
+			eprintln!("🔍 Token preview: {}...", if token_str.len() > 50 { &token_str[..50] } else { &token_str });
 		} else {
 			eprintln!("❌ User has NO access token!");
 		}
