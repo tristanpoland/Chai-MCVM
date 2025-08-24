@@ -86,6 +86,11 @@ impl User {
 		&self.kind
 	}
 
+	/// Set this user's name
+	pub fn set_name(&mut self, name: &str) {
+		self.name = Some(name.to_string());
+	}
+
 	/// Set this user's UUID
 	pub fn set_uuid(&mut self, uuid: &str) {
 		self.uuid = Some(uuid.to_string());
