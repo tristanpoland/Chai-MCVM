@@ -136,6 +136,7 @@ serde = { workspace = true }
 serde_json = { workspace = true }
 simd-json = { workspace = true }
 sha2 = { workspace = true }
+mcvm_auth = { workspace = true }
 mcvm_core = { workspace = true }
 mcvm_mods = { workspace = true }
 mcvm_net = { workspace = true }
