@@ -1,0 +1,25 @@
+[package]
+name = "mcvm_pkg"
+version = "0.15.0"
+description = "Package standard for mcvm"
+keywords = ["minecraft", "launcher", "game", "mc"]
+categories.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+
+[features]
+schema = ["dep:schemars", "mcvm_parse/schema", "mcvm_shared/schema"]
+
+[dependencies]
+async-trait = { workspace = true }
+anyhow = { workspace = true }
+itertools = { workspace = true }
+mcvm_parse = { workspace = true }
+mcvm_shared = { workspace = true }
+schemars = { workspace = true, optional = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+simd-json = { workspace = true }

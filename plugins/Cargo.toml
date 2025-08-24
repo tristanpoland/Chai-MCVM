@@ -1,0 +1,72 @@
+[package]
+name = "mcvm_plugins"
+version = "0.1.0"
+description = "Standard plugins for MCVM"
+keywords = ["minecraft", "launcher", "game", "mc", "plugin"]
+categories.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+
+[[bin]]
+name = "mcvm_plugin_args"
+path = "plugins/args/main.rs"
+
+[[bin]]
+name = "mcvm_plugin_backup"
+path = "plugins/backup/main.rs"
+
+[[bin]]
+name = "mcvm_plugin_options"
+path = "plugins/options/main.rs"
+
+[[bin]]
+name = "mcvm_plugin_docs"
+path = "plugins/docs/main.rs"
+
+[[bin]]
+name = "mcvm_plugin_stats"
+path = "plugins/stats/main.rs"
+
+[[bin]]
+name = "mcvm_plugin_server_restart"
+path = "plugins/server_restart/main.rs"
+
+[[bin]]
+name = "mcvm_plugin_modrinth"
+path = "plugins/modrinth/main.rs"
+
+[[bin]]
+name = "mcvm_plugin_gen_pkg"
+path = "plugins/gen_pkg/main.rs"
+
+[[bin]]
+name = "mcvm_plugin_mcvm_transfer"
+path = "plugins/mcvm_transfer/main.rs"
+
+[dependencies]
+anyhow = { workspace = true }
+clap = { workspace = true }
+color-print = { workspace = true }
+glob = { workspace = true }
+iso8601-timestamp = { workspace = true }
+itertools = { workspace = true }
+mcvm = { workspace = true }
+mcvm_core = { workspace = true }
+mcvm_net = { workspace = true }
+mcvm_plugin = { workspace = true, features = ["api"] }
+mcvm_shared = { workspace = true }
+mcvm_options = { workspace = true }
+rand = { workspace = true }
+regex = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+termimad = { workspace = true }
+tokio = { workspace = true }
+version-compare = { workspace = true }
+zip = { workspace = true }
+
+[build-dependencies]
+zip = { workspace = true }

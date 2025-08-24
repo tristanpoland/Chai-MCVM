@@ -1,0 +1,17 @@
+@meta {
+	name "Custom GUI Support";
+	description "Installs mods to support custom GUIs in resource packs";
+	authors "mcvm";
+}
+
+@install {
+	if modloader forgelike {
+		require "optifine-support";
+		finish;
+	}
+	if modloader fabriclike {
+		require "optigui";
+		finish;
+	}
+	fail unsupported_modloader;
+}

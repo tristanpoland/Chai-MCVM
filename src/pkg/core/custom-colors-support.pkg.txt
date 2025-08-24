@@ -1,0 +1,17 @@
+@meta {
+	name "Custom Colors Support";
+	description "Installs mods to support custom colors in resource packs";
+	authors "mcvm";
+}
+
+@install {
+	if modloader forgelike {
+		require "optifine-support";
+		finish;
+	}
+	if modloader fabriclike {
+		require "colormatic";
+		finish;
+	}
+	fail unsupported_modloader;
+}

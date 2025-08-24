@@ -1,0 +1,17 @@
+@meta {
+	name "Shader Support";
+	description "Installs mods to allow the loading of shader packs";
+	authors "mcvm";
+}
+
+@install {
+	if modloader forgelike {
+		require "optifine-support";
+		finish;
+	}
+	if modloader fabriclike {
+		require <"iris">;
+		finish;
+	}
+	fail unsupported_modloader;
+}

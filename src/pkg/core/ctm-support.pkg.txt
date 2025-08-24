@@ -1,0 +1,17 @@
+@meta {
+	name "Connected Textures Support";
+	description "Installs mods to support Connected Textures in resource packs";
+	authors "mcvm";
+}
+
+@install {
+	if modloader forgelike {
+		require "optifine-support";
+		finish;
+	}
+	if modloader fabriclike {
+		require "continuity";
+		finish;
+	}
+	fail unsupported_modloader;
+}

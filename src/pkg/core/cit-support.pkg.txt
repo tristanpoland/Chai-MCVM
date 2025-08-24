@@ -1,0 +1,17 @@
+@meta {
+	name "Custom Item Textures Support";
+	description "Installs mods to support Custom Item Textures in resource packs";
+	authors "mcvm";
+}
+
+@install {
+	if modloader forgelike {
+		require "optifine-support";
+		finish;
+	}
+	if modloader fabriclike {
+		require "cit-resewn";
+		finish;
+	}
+	fail unsupported_modloader;
+}

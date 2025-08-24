@@ -1,0 +1,21 @@
+{
+	"name": "Stats",
+	"description": "Track and view playtime stats",
+	"hooks": {
+		"subcommand": {
+			"executable": "${PLUGIN_DIR}/mcvm_plugin_stats"
+		},
+		"on_instance_launch": {
+			"executable": "${PLUGIN_DIR}/mcvm_plugin_stats"
+		},
+		"on_instance_stop": {
+			"executable": "${PLUGIN_DIR}/mcvm_plugin_stats"
+		},
+		"while_instance_launch": {
+			"executable": "${PLUGIN_DIR}/mcvm_plugin_stats"
+		}
+	},
+	"subcommands": {
+		"stats": "View playtime stats"
+	}
+}

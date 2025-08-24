@@ -1,0 +1,17 @@
+@meta {
+	name "Custom Splash Screen Support";
+	description "Installs mods to support custom splash screens in resource packs";
+	authors "mcvm";
+}
+
+@install {
+	if modloader forgelike {
+		require "optifine-support";
+		finish;
+	}
+	if modloader fabriclike {
+		require "puzzle";
+		finish;
+	}
+	fail unsupported_modloader;
+}

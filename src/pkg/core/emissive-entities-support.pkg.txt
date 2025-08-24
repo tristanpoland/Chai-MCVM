@@ -1,0 +1,17 @@
+@meta {
+	name "Emissive Entities Support";
+	description "Installs mods to support emissive entities in resource packs";
+	authors "mcvm";
+}
+
+@install {
+	if modloader forgelike {
+		require "optifine-support";
+		finish;
+	}
+	if modloader fabriclike {
+		require "entity-texture-features";
+		finish;
+	}
+	fail unsupported_modloader;
+}
