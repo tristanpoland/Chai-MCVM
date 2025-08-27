@@ -124,7 +124,9 @@ impl JavaInstallation {
 	pub fn get_jvm_path(&self) -> PathBuf {
 		#[cfg(target_family = "windows")]
 		let path = "bin/java.exe";
-		#[cfg(not(target_family = "windows"))]
+		#[cfg(all(not(target_family = "windows"), target_os = "macos"))]
+		let path = "Contents/Home/bin/java";
+		#[cfg(all(not(target_family = "windows"), not(target_os = "macos")))]
 		let path = "bin/java";
 		self.path.join(path)
 	}
