@@ -143,6 +143,14 @@ impl Instance {
 		Ok(())
 	}
 
+	/// Set custom directories for external integration (e.g., ChaiLauncher)
+	pub fn set_custom_dirs(&mut self, game_dir: PathBuf) -> anyhow::Result<()> {
+		let instance_dirs = InstanceDirs::with_game_dir(game_dir);
+		instance_dirs.ensure_exist()?;
+		self.dirs.fill(instance_dirs);
+		Ok(())
+	}
+
 	/// Create the core instance
 	pub(super) async fn create_core_instance<'core>(
 		&mut self,
@@ -296,13 +304,20 @@ pub struct InstanceDirs {
 impl InstanceDirs {
 	/// Create a new InstanceDirs
 	pub fn new(paths: &Paths, instance_id: &str, side: &Side) -> Self {
-		let inst_dir = paths.project.data_dir().join("instances").join(instance_id);
+		let inst_dir = paths.data.join("instances").join(instance_id);
 
 		let game_dir = match side {
 			Side::Client => inst_dir.join(".minecraft"),
 			Side::Server => inst_dir.clone(),
 		};
 
+		Self { inst_dir, game_dir }
+	}
+
+	/// Create InstanceDirs with a custom game directory (for external integration)
+	pub fn with_game_dir(game_dir: PathBuf) -> Self {
+		// For external integration, the inst_dir is the parent of the game_dir
+		let inst_dir = game_dir.parent().unwrap_or(&game_dir).to_path_buf();
 		Self { inst_dir, game_dir }
 	}
 
