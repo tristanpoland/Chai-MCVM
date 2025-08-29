@@ -195,7 +195,7 @@ impl UpdateManager {
 			core_config = core_config.ms_client_id(client_id.clone());
 		}
 		let core_config = core_config.build();
-		let mut core = MCVMCore::with_config(core_config).context("Failed to initialize core")?;
+		let mut core = MCVMCore::with_config_and_paths(core_config, paths.core.clone()).context("Failed to initialize core")?;
 
 		// Set up user manager along with custom auth function that handles using plugins
 		core.get_users().steal_users(users);
