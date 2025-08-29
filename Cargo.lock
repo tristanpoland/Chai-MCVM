@@ -2582,6 +2582,7 @@ dependencies = [
  "directories",
  "hex",
  "itertools",
+ "mcvm_auth",
  "mcvm_core",
  "mcvm_mods",
  "mcvm_net",
@@ -2661,6 +2662,7 @@ dependencies = [
  "simd-json",
  "tar",
  "tokio",
+ "version-compare 0.2.0",
  "zip",
 ]
 

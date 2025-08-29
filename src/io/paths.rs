@@ -77,9 +77,17 @@ impl Paths {
 			ProjectDirs::from("", "mcvm", "mcvm").ok_or(anyhow!("Base directories failed"))?;
 
 		let data = project.data_dir().to_owned();
+		Self::with_data_dir_no_create(data)
+	}
+
+	/// Create paths with a custom data directory without creating any directories
+	pub fn with_data_dir_no_create(data: PathBuf) -> anyhow::Result<Self> {
+		let base = BaseDirs::new().ok_or(anyhow!("Base directories failed"))?;
+		let project =
+			ProjectDirs::from("", "mcvm", "mcvm").ok_or(anyhow!("Base directories failed"))?;
 		let internal = data.join("internal");
 		let addons = internal.join("addons");
-		let pkg_cache = project.cache_dir().join("pkg");
+		let pkg_cache = data.join("cache").join("pkg");  // Use custom cache location
 		let pkg_index_cache = pkg_cache.join("index");
 		let logs = data.join("logs");
 		let launch_logs = logs.join("launch");
@@ -92,7 +100,7 @@ impl Paths {
 		let proxy = data.join("proxy");
 		let plugins = data.join("plugins");
 
-		let core_paths = mcvm_core::Paths::new().context("Failed to create core paths")?;
+		let core_paths = mcvm_core::Paths::with_data_dir(data.clone()).context("Failed to create core paths")?;
 
 		Ok(Paths {
 			base,
@@ -111,5 +119,12 @@ impl Paths {
 			proxy,
 			plugins,
 		})
+	}
+
+	/// Create paths with a custom data directory and create the directories
+	pub async fn with_data_dir(data: PathBuf) -> anyhow::Result<Self> {
+		let out = Self::with_data_dir_no_create(data)?;
+		out.create_dirs().await?;
+		Ok(out)
 	}
 }

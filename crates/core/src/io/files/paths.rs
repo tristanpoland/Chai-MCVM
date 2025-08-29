@@ -65,6 +65,14 @@ impl Paths {
 			.ok_or(anyhow!("Failed to create project directories"))?;
 
 		let data = project.data_dir().to_owned();
+		Self::with_data_dir_no_create(data)
+	}
+
+	/// Create paths with a custom data directory without creating any directories
+	pub fn with_data_dir_no_create(data: PathBuf) -> anyhow::Result<Self> {
+		let base = BaseDirs::new().ok_or(anyhow!("Failed to create base directories"))?;
+		let project = ProjectDirs::from("", "mcvm", "mcvm")
+			.ok_or(anyhow!("Failed to create project directories"))?;
 		let internal = data.join("internal");
 		let assets = internal.join("assets");
 		let libraries = internal.join("libraries");
@@ -92,5 +100,12 @@ impl Paths {
 			launch_logs,
 			run,
 		})
+	}
+	
+	/// Create paths with a custom data directory and create the directories
+	pub fn with_data_dir(data: PathBuf) -> anyhow::Result<Self> {
+		let out = Self::with_data_dir_no_create(data)?;
+		out.create_dirs()?;
+		Ok(out)
 	}
 }
