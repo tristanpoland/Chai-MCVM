@@ -47,7 +47,7 @@ pub async fn get(
 
 	let mut libs_to_download = Vec::new();
 
-	for lib in libraries {
+	for lib in &libraries {
 		if !lib.natives.is_empty() {
 			let key = skip_none!(get_natives_classifier_key(&lib.natives));
 
@@ -173,7 +173,7 @@ pub fn get_classpath(client_meta: &ClientMeta, paths: &Paths) -> anyhow::Result<
 
 	let mut classpath = Classpath::new();
 	let libraries = get_list(client_meta);
-	for lib in libraries {
+	for lib in &libraries {
 		if !lib.natives.is_empty() {
 			let key = skip_none!(get_natives_classifier_key(&lib.natives));
 
@@ -277,6 +277,42 @@ fn extract_native(
 }
 
 /// Gets the list of allowed libraries from the client meta
-pub fn get_list(client_meta: &ClientMeta) -> impl Iterator<Item = &Library> {
-	client_meta.libraries.iter().filter(|lib| is_allowed(lib))
+pub fn get_list(client_meta: &ClientMeta) -> Vec<Library> {
+	client_meta
+		.libraries
+		.iter()
+		.filter(|lib| is_allowed(lib))
+		.map(select_native_arch)
+		.collect()
+}
+
+/// Swaps x86_64-only native artifacts for their arm64 builds on aarch64.
+///
+/// Vanilla manifests ship `natives-linux`, `natives-macos-arm64` and
+/// `natives-windows-arm64`, but no `natives-linux-arm64`. On Linux ARM the game
+/// therefore loads x86_64 shared objects and aborts with
+/// "Failed to locate library: liblwjgl.so". LWJGL publishes arm64 builds to
+/// Maven Central, which is not where the manifest URLs point.
+fn select_native_arch(lib: &Library) -> Library {
+	let mut lib = lib.clone();
+
+	#[cfg(all(target_os = "linux", target_arch = "aarch64"))]
+	{
+		let is_lwjgl_native =
+			lib.name.starts_with("org.lwjgl:") && lib.name.ends_with(":natives-linux");
+		if !is_lwjgl_native {
+			return lib;
+		}
+
+		if let Some(artifact) = &mut lib.downloads.artifact {
+			if let Some(stem) = artifact.path.strip_suffix("-natives-linux.jar") {
+				let path = format!("{stem}-natives-linux-arm64.jar");
+				artifact.url = format!("https://repo1.maven.org/maven2/{path}");
+				artifact.path = path;
+				lib.name = format!("{}-arm64", lib.name);
+			}
+		}
+	}
+
+	lib
 }
